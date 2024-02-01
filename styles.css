@@ -1,5 +1,7 @@
 body {
     padding: 10px;
+    color: #343a40;
+    background-color: #f8f9fa;
 }
 
 .album {
@@ -9,13 +11,36 @@ body {
 }
 
 .album img {
-    width: calc(25% - 10px);
+    width: 100%;
     margin: 10px;
-    border-radius: 8px;
-    transition: transform 0.2s;
+    border-radius: 10px;
+    border-color: #adb5bd;
+    background-color: #adb5bd;
     cursor: pointer;
 }
 
-.album img:hover {
-    transform: scale(1.1);
+/* Media queries for image resizing */
+@media (min-width: 576px) {
+    .album img {
+        width: calc(50% - 20px);
+    }
 }
+
+@media (min-width: 768px) {
+    .album img {
+        width: calc(33.33% - 20px);
+    }
+}
+
+@media (min-width: 992px) {
+    .album img {
+        width: calc(25% - 20px);
+    }
+}
+
+@media (min-width: 1200px) {
+    .album img {
+        width: calc(20% - 20px);
+    }
+}
+/* End */
