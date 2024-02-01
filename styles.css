@@ -1,0 +1,21 @@
+body {
+    padding: 10px;
+}
+
+.album {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.album img {
+    width: calc(25% - 10px);
+    margin: 10px;
+    border-radius: 8px;
+    transition: transform 0.2s;
+    cursor: pointer;
+}
+
+.album img:hover {
+    transform: scale(1.1);
+}
