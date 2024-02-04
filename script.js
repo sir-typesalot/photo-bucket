@@ -32,14 +32,18 @@ function loadImages() {
 
 function addImages(imageUrls) {
     // Get the album container
-    const albumContainer = document.getElementById("album");
+    const mosaicContainer = document.getElementById("mosaic-container");
 
     // Populate images
     imageUrls.forEach(url => {
-        const img = document.createElement("img");
-        img.src = url;
-        img.classList.add("img-thumbnail");
-        img.alt = "Album Image";
-        albumContainer.appendChild(img);
+      const mosaicItem = document.createElement("div");
+      mosaicItem.classList.add("mosaic-item");
+
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = "Mosaic Image";
+
+      mosaicItem.appendChild(img);
+      mosaicContainer.appendChild(mosaicItem);
     });
 }
