@@ -42,7 +42,7 @@ function addImages(imageUrls) {
       const img = document.createElement("img");
       img.src = url;
       img.alt = "Mosaic Image";
-
+      // Add images to grid
       mosaicItem.appendChild(img);
       mosaicContainer.appendChild(mosaicItem);
     });
