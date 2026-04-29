@@ -1,28 +1,17 @@
 // ─── CONFIGURATION ───────────────────────────────────────────────────────────
 const R2_BASE_URL = "https://pub-d54c467e80a6423abad4626c231a696d.r2.dev";
 const CACHE_PREFIX = "cache/";
+const PUBLIC_PREFIX = "public/";
 // ─────────────────────────────────────────────────────────────────────────────
 
 const grid    = document.getElementById("grid");
 const status  = document.getElementById("status");
 const errMsg  = document.getElementById("error-msg");
 
-function formatSize(bytes) {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 ** 2) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / 1024 ** 2).toFixed(1)} MB`;
-}
-
-function formatDate(iso) {
-  return new Date(iso).toLocaleDateString(undefined, {
-    year: "numeric", month: "short", day: "numeric"
-  });
-}
-
-// Strip the cache prefix to get the original file key
+// Swap the cache prefix for the public prefix to get the original file key
 function originalKey(cacheKey) {
   return cacheKey.startsWith(CACHE_PREFIX)
-    ? cacheKey.slice(CACHE_PREFIX.length)
+    ? PUBLIC_PREFIX + cacheKey.slice(CACHE_PREFIX.length)
     : cacheKey;
 }
 
@@ -44,7 +33,7 @@ function clearSkeletons() {
   grid.querySelectorAll(".skeleton").forEach(el => el.remove());
 }
 
-function renderCard({ key, size, lastModified }) {
+function renderCard({ key }) {
   const thumbUrl    = `${R2_BASE_URL}/${key}`;
   const originalUrl = `${R2_BASE_URL}/${originalKey(key)}`;
   const filename    = key.split("/").pop();
@@ -66,9 +55,7 @@ function renderCard({ key, size, lastModified }) {
 
   const info = document.createElement("div");
   info.className = "card-info";
-  info.innerHTML = `
-    <div class="card-name">${filename}</div>
-    <div class="card-meta">${formatSize(size)} · ${formatDate(lastModified)}</div>`;
+  info.innerHTML = `<div class="card-name">${filename}</div>`;
 
   a.appendChild(img);
   a.appendChild(info);
@@ -80,7 +67,7 @@ async function fetchFiles() {
   if (!res.ok) throw new Error(`Manifest fetch failed: ${res.status}`);
 
   const keys = await res.json();
-  return keys.map(key => ({ key, size: null, lastModified: null }));
+  return keys.map(key => ({ key }));
 }
 
 async function init() {
