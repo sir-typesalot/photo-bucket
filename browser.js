@@ -23,7 +23,6 @@ function showSkeletons(n = 12) {
       <div class="card-thumb"></div>
       <div class="card-info">
         <div class="card-name">loading</div>
-        <div class="card-meta">loading</div>
       </div>`;
     grid.appendChild(card);
   }
