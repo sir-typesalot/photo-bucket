@@ -1,5 +1,5 @@
 // ─── CONFIGURATION ───────────────────────────────────────────────────────────
-const R2_BASE_URL = "https://YOUR_BUCKET.YOUR_ACCOUNT.r2.cloudflarestorage.com";
+const R2_BASE_URL = "https://pub-d54c467e80a6423abad4626c231a696d.r2.dev";
 const CACHE_PREFIX = "cache/";
 // ─────────────────────────────────────────────────────────────────────────────
 
