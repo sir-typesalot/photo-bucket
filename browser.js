@@ -76,17 +76,11 @@ function renderCard({ key, size, lastModified }) {
 }
 
 async function fetchFiles() {
-  const url = `${R2_BASE_URL}/?list-type=2&prefix=${encodeURIComponent(CACHE_PREFIX)}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Bucket list failed: ${res.status}`);
+  const res = await fetch(`${R2_BASE_URL}/manifest.json`);
+  if (!res.ok) throw new Error(`Manifest fetch failed: ${res.status}`);
 
-  const xml = new DOMParser().parseFromString(await res.text(), "application/xml");
-
-  return [...xml.querySelectorAll("Contents")].map(node => ({
-    key:          node.querySelector("Key").textContent,
-    size:         parseInt(node.querySelector("Size").textContent, 10),
-    lastModified: node.querySelector("LastModified").textContent,
-  }));
+  const keys = await res.json();
+  return keys.map(key => ({ key, size: null, lastModified: null }));
 }
 
 async function init() {
