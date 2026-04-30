@@ -44,9 +44,10 @@ async function resizeAndUpload(bucket, publicKey, cacheKey) {
   const img = photon.PhotonImage.new_from_byteslice(inputBytes);
   const w = Math.round(img.get_width() * RESIZE_FACTOR);
   const h = Math.round(img.get_height() * RESIZE_FACTOR);
-  photon.resize(img, w, h, photon.SamplingFilter.Lanczos3);
-  const outputBytes = img.get_bytes_jpeg(85);
+  const resized = photon.resize(img, w, h, 1); // 1 = Lanczos3
+  const outputBytes = resized.get_bytes_jpeg(85);
   img.free();
+  resized.free();
 
   await bucket.put(cacheKey, outputBytes, {
     httpMetadata: { contentType: "image/jpeg" },
@@ -54,6 +55,10 @@ async function resizeAndUpload(bucket, publicKey, cacheKey) {
 }
 
 export default {
+  async fetch(request, env, ctx) {
+    return new Response("OK", { status: 200 });
+  },
+
   async scheduled(event, env, ctx) {
     const manifest    = await fetchManifest(env.BUCKET);
     const manifestSet = new Set(manifest);
