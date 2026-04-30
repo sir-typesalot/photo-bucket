@@ -1,4 +1,4 @@
-import { transform } from "@cf-wasm/photon";
+import * as photon from "@cf-wasm/photon";
 
 // ─── CONFIGURATION ───────────────────────────────────────────────────────────
 const PUBLIC_PREFIX = "public/";
@@ -41,19 +41,15 @@ async function resizeAndUpload(bucket, publicKey, cacheKey) {
   if (!obj) throw new Error(`Object not found: ${publicKey}`);
 
   const inputBytes = new Uint8Array(await obj.arrayBuffer());
-  const outputBytes = transform(inputBytes, img => {
-    const w = Math.round(img.width * RESIZE_FACTOR);
-    const h = Math.round(img.height * RESIZE_FACTOR);
-    img.resize(w, h);
-  });
-
-  const ext = publicKey.split(".").pop().toLowerCase();
-  const contentType = ext === "png" ? "image/png"
-    : ext === "webp" ? "image/webp"
-    : "image/jpeg";
+  const img = photon.PhotonImage.new_from_byteslice(inputBytes);
+  const w = Math.round(img.get_width() * RESIZE_FACTOR);
+  const h = Math.round(img.get_height() * RESIZE_FACTOR);
+  photon.resize(img, w, h, photon.SamplingFilter.Lanczos3);
+  const outputBytes = img.get_bytes_jpeg(85);
+  img.free();
 
   await bucket.put(cacheKey, outputBytes, {
-    httpMetadata: { contentType },
+    httpMetadata: { contentType: "image/jpeg" },
   });
 }
 
