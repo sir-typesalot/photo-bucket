@@ -7,9 +7,7 @@ binding    = "BUCKET"
 bucket_name = "photo-bucket"
 
 [triggers]
-# crons = ["0 * * * *"]  # Run every hour
-crons = ["*/5 * * * *"]  # Run every 5 minutes
-
+crons = ["0 * * * *"]  # Run every hour
 
 [observability]
 enabled = false
