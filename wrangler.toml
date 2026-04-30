@@ -1,0 +1,10 @@
+name       = "photo-cache-worker"
+main       = "worker.js"
+compatibility_date = "2024-01-01"
+
+[[r2_buckets]]
+binding    = "BUCKET"
+bucket_name = "photo-bucket"
+
+[triggers]
+crons = ["0 * * * *"]  # Run every hour
