@@ -133,5 +133,7 @@ def main():
     else:
         log.info("No changes found.")
 
+    log.info("All Done!")
+
 if __name__ == "__main__":
     main()
